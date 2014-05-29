@@ -79,12 +79,25 @@ namespace UsabilityDynamics {
           'can_export'        => false,
           'hierarchical'       => false,
           'menu_position'      => 210,
-          'supports'           => array( 'title', 'excerpt' )
+          'supports'           => array( 'title', 'custom-fields' )
         ));
 
         register_taxonomy( '_job:type', '_job', array(
-          'labelsl' => array(),
-          'hierarchical' => true,
+          'label' => __( 'Type' ),
+          'labelsl' => array(
+            'name'              => _x( 'Job Type', 'taxonomy general name' ),
+            'singular_name'     => _x( 'Job Types', 'taxonomy singular name' ),
+            'search_items'      => __( 'Search Job Type' ),
+            'all_items'         => __( 'All Job Type' ),
+            'parent_item'       => __( 'Parent Job Type' ),
+            'parent_item_colon' => __( 'Parent Job Type:' ),
+            'edit_item'         => __( 'Edit Job Type' ),
+            'update_item'       => __( 'Update Job Type' ),
+            'add_new_item'      => __( 'Add New Job Type' ),
+            'new_item_name'     => __( 'New Job Type Name' ),
+            'menu_name'         => __( 'Job Type' )
+          ),
+          'hierarchical' => false,
           'rewrite' => false,
           'public' => false,
           'show_ui' => false,
@@ -92,9 +105,22 @@ namespace UsabilityDynamics {
           '_builtin' => false
         ));
 
-        register_taxonomy( '_job:priority', '_job', array(
-          'labelsl' => array(),
-          'hierarchical' => true,
+        register_taxonomy( '_job:state', '_job', array(
+          'label' => __( 'State' ),
+          'labels' => array(
+            'name'              => _x( 'Job State', 'taxonomy general name' ),
+            'singular_name'     => _x( 'Job States', 'taxonomy singular name' ),
+            'search_items'      => __( 'Search Job State' ),
+            'all_items'         => __( 'All Job State' ),
+            'parent_item'       => __( 'Parent Job State' ),
+            'parent_item_colon' => __( 'Parent Job State:' ),
+            'edit_item'         => __( 'Edit Job State' ),
+            'update_item'       => __( 'Update Job State' ),
+            'add_new_item'      => __( 'Add New Job State' ),
+            'new_item_name'     => __( 'New Job State Name' ),
+            'menu_name'         => __( 'Job State' )
+          ),
+          'hierarchical' => false,
           'rewrite' => false,
           'public' => false,
           'show_ui' => false,

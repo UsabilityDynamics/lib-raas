@@ -2,6 +2,7 @@
 /**
  * RaaS Job Instance
  *
+ *
  * @namespace UsabilityDynamics
  * @module UsabilityDynamics
  * @author potanin@UD
@@ -75,6 +76,13 @@ namespace UsabilityDynamics\RaaS {
     }
 
     /**
+     *
+     */
+    private function getLogs() {
+
+    }
+
+    /**
      * Delete Job.
      *
      * Delete it from local store and from API.
@@ -120,15 +128,15 @@ namespace UsabilityDynamics\RaaS {
 
       $_post = array(
         'post_type'     => '_job',
+        'post_status'   => 'publish',
         'post_title'    => isset( $data->title ) ? $data->title : null,
         'post_content'  => isset( $body->message ) ? $body->message : null,
         'post_password' => $options->hash,
         'import_id'     => $body->id,
         'tax_input'     => array(
-          '_job:type'     => array( $type ),
-          '_job:priority' => array( $options->priority )
-        ),
-        'post_status'   => 'publish'
+          '_job:type'     => $type,
+          '_job:state'    => 'inactive'
+        )
       );
 
       $id = wp_insert_post( $_post, true );
@@ -137,8 +145,15 @@ namespace UsabilityDynamics\RaaS {
         return new Error( 'Fail...' );
       }
 
-      update_post_meta( $id, 'import_id',   $body->id  );
+      // Task Fields.
+      update_post_meta( $id, '_attempts.max',  $options->attempts );
+      update_post_meta( $id, '_attempts.remaining',  null );
+      update_post_meta( $id, '_priority',  0  );
+      update_post_meta( $id, '_progress',  0  );
+
+      // WordPress System Fields.
       update_post_meta( $id, '_edit_lock',  time() . ':0'  );
+      update_post_meta( $id, 'import_id',   $body->id  );
 
       $this->id = $id;
       $this->data = $data;
