@@ -1,0 +1,23 @@
+{
+  "name": "usabilitydynamics/lib-raas",
+  "type": "library",
+  "version": "0.0.1",
+  "description": "RaaS handler.",
+  "require": {},
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "http://repository.usabilitydynamics.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "homepage": "http://github.com/UsabilityDynamics/lib-lib-raas",
+  "autoload": {
+    "classmap": [ "lib" ]
+  },
+  "extra": {},
+  "support": {
+    "issues": "http://github.com/UsabilityDynamics/lib-lib-raas/issues"
+  },
+  "license": "MIT"
+}
