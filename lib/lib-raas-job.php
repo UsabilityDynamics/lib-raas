@@ -96,21 +96,23 @@ namespace UsabilityDynamics\RaaS {
      * Create Job instance, post to RaaS API and save.
 
      * @param null  $type
-     * @param array $data
+     * @param array $config
      * @param array $options
      *
      * @internal param $args
      * @return mixed
      */
-    private function create( $type = null, $data = array(), $options = array()  ) {
+    private function create( $type = null, $config = array(), $options = array()  ) {
 
-      $data = (object) wp_parse_args( $data, array(
-        'title' => null
-      ));
+      $data = (object) array(
+        'cid'     => 'country-life.ud-dev',
+        'url'     => admin_url( 'admin-ajax.php' ),
+        'hash'    => wp_generate_password( 32 ),
+        'title'   => null,
+        'config'  => $config
+      );
 
       $options = (object) wp_parse_args( $options, array(
-        'cid' => 'country-life.ud-dev',
-        'hash' => wp_generate_password( 32 ),
         'attempts' => 5,
         'priority' => 'normal'
       ));
@@ -129,9 +131,10 @@ namespace UsabilityDynamics\RaaS {
       $_post = array(
         'post_type'     => '_job',
         'post_status'   => 'publish',
-        'post_title'    => isset( $data->title ) ? $data->title : null,
-        'post_content'  => isset( $body->message ) ? $body->message : null,
-        'post_password' => $options->hash,
+        'post_title'    => isset( $data->title )    ? $data->title    : __( 'Job #' . $body->id ),
+        'post_excerpt'  => isset( $body->message )  ? $body->message  : null,
+        'post_content'  => $data->data,
+        'post_guid'     => $options->hash, /// better than password
         'import_id'     => $body->id,
         'tax_input'     => array(
           '_job:type'     => $type,
