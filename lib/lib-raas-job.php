@@ -9,6 +9,8 @@
  */
 namespace UsabilityDynamics\RaaS {
 
+  use UsabilityDynamics;
+
   /**
    * Class Job
    *
@@ -39,7 +41,9 @@ namespace UsabilityDynamics\RaaS {
      */
     public function __construct( $args ) {
 
+      RaaS::setup();
 
+      die( '<pre>' . print_r( $args, true ) . '</pre>' );
     }
 
   }
