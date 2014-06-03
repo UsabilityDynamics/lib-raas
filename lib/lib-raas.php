@@ -79,7 +79,8 @@ namespace UsabilityDynamics {
           'can_export'        => false,
           'hierarchical'       => false,
           'menu_position'      => 210,
-          'supports'           => array( 'title', 'custom-fields' )
+          'supports'           => array( 'title', 'custom-fields' ),
+          'menu_icon'         => 'dashicons-randomize'
         ));
 
         register_taxonomy( '_job:type', '_job', array(
