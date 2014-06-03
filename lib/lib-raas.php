@@ -71,7 +71,7 @@ namespace UsabilityDynamics {
           'public'             => false,
           'publicly_queryable' => false,
           'show_ui'            => true,
-          'show_in_menu'       => false,
+          'show_in_menu'       => true,
           'query_var'          => false,
           'rewrite'            => false,
           'capability_type'    => 'post',
@@ -133,6 +133,51 @@ namespace UsabilityDynamics {
       } catch( Exception $e ) {}
 
       return true;
+
+    }
+
+    /**
+     * Make RPC Request.
+     *
+     * @example
+     *
+     *      // Create Import Request.
+     *      $_response = self::raasRequest( 'wpp.startImport', array( 'asdf' => 'sadfsadfasdfsadf' ) );
+     *
+     * @param string $method
+     * @param array  $data
+     *
+     * @method raasRequest
+     * @since 5.0.0
+     *
+     * @return array
+     * @author potanin@UD
+     */
+    public function makeRequest( $method = '', $data = array() ) {
+
+      include_once( ABSPATH . WPINC . '/class-IXR.php' );
+      include_once( ABSPATH . WPINC . '/class-wp-http-ixr-client.php' );
+
+      $client = new \WP_HTTP_IXR_Client( 'raas.udx.io', '/rpc/v1' );
+
+      // Set User Agent.
+      $client->useragent = 'WordPress/3.7.1 WP-Property/3.6.1 XML-Importer/' . self::$version;
+
+      // Request Headers.
+      $client->headers = array(
+        'authorization'    => 'Basic ' . base64_encode( $wpp_property_import[ 'raas' ][ 'token' ] . ':' . $wpp_property_import[ 'raas' ][ 'session' ] ),
+        'x-access-token'   => $wpp_property_import[ 'raas' ][ 'key' ],
+        'x-session'        => $wpp_property_import[ 'raas' ][ 'session' ],
+        'x-region'         => 'us-east',
+        'x-callback'       => site_url( 'xmlrpc.php' ),
+        'x-callback-token' => wp_generate_password( 20 )
+      );
+
+      // Execute Request.
+      $client->query( $method, $data );
+
+      // Return Message.
+      return isset( $client->message ) && isset( $client->message->params ) && is_array( $client->message->params ) ? $client->message->params[ 0 ] : array();
 
     }
 
